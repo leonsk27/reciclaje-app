@@ -1,11 +1,8 @@
 import 'dart:math' as math;
 import 'package:best_flutter_ui_templates/fitness_app/fitness_app_theme.dart';
 import 'package:best_flutter_ui_templates/fitness_app/models/tabIcon_data.dart';
-import 'package:best_flutter_ui_templates/main.dart';
+import 'package:best_flutter_ui_templates/fitness_app/ui_view/camara_galeria_view.dart';
 import 'package:flutter/material.dart';
-
-import '../../main.dart';
-import '../models/tabIcon_data.dart';
 
 class BottomBarView extends StatefulWidget {
   const BottomBarView(
@@ -120,8 +117,7 @@ class _BottomBarViewState extends State<BottomBarView>
           },
         ),
         Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
           child: SizedBox(
             width: 38 * 2.0,
             height: 38 + 62.0,
@@ -140,20 +136,20 @@ class _BottomBarViewState extends State<BottomBarView>
                             parent: animationController!,
                             curve: Curves.fastOutSlowIn)),
                     child: Container(
-                      // alignment: Alignment.center,s
                       decoration: BoxDecoration(
-                        color: FitnessAppTheme.nearlyDarkBlue,
-                        gradient: LinearGradient(
-                            colors: [
-                              FitnessAppTheme.nearlyDarkBlue,
-                              HexColor('#6A88E5'),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight),
+                        color:Color.fromARGB(255, 23, 184, 63),
+                        gradient: RadialGradient(
+                          colors: [
+                            Color.fromARGB(255, 23, 184, 63),
+                            Color.fromARGB(255, 19, 54, 24),
+                          ],
+                          center: Alignment.center,
+                          radius: 2.3,
+                        ),
                         shape: BoxShape.circle,
                         boxShadow: <BoxShadow>[
                           BoxShadow(
-                              color: FitnessAppTheme.nearlyDarkBlue
+                              color:Color.fromARGB(255, 23, 184, 63)
                                   .withOpacity(0.4),
                               offset: const Offset(8.0, 16.0),
                               blurRadius: 16.0),
@@ -165,9 +161,16 @@ class _BottomBarViewState extends State<BottomBarView>
                           splashColor: Colors.white.withOpacity(0.1),
                           highlightColor: Colors.transparent,
                           focusColor: Colors.transparent,
-                          onTap: widget.addClick,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CameraScreen(),
+                              ),
+                            );
+                          },
                           child: Icon(
-                            Icons.add,
+                            Icons.camera_alt_outlined,
                             color: FitnessAppTheme.white,
                             size: 32,
                           ),
@@ -272,7 +275,7 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: FitnessAppTheme.nearlyDarkBlue,
+                        color:Color.fromARGB(255, 23, 184, 63),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -293,7 +296,7 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
                       width: 4,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: FitnessAppTheme.nearlyDarkBlue,
+                        color:Color.fromARGB(255, 23, 184, 63),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -314,7 +317,7 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
                       width: 6,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: FitnessAppTheme.nearlyDarkBlue,
+                        color:Color.fromARGB(255, 23, 184, 63),
                         shape: BoxShape.circle,
                       ),
                     ),

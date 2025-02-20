@@ -17,8 +17,8 @@ class WelcomePage extends StatelessWidget {
                   decoration: const BoxDecoration(
                       gradient: RadialGradient(
                       colors: [
-                        Color.fromARGB(255, 23, 44, 184),
-                        Color.fromARGB(255, 21, 26, 55),
+                        Color.fromARGB(255, 23, 184, 63),
+                        Color.fromARGB(255, 19, 54, 24),
                       ],
                       center: Alignment.center,
                       radius: 0.6,
@@ -92,7 +92,7 @@ class WelcomePage extends StatelessWidget {
                           width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            border: Border.all(color: Color.fromARGB(255, 23, 44, 184)),
+                            border: Border.all(color: Color.fromARGB(255, 23, 184, 63),),
                           ),
                           child: const Center(
                             child: Text(
@@ -100,7 +100,7 @@ class WelcomePage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 23, 44, 184),
+                                color: Color.fromARGB(255, 23, 184, 63),
                               ),
                             ),
                           ),
@@ -120,8 +120,8 @@ class WelcomePage extends StatelessWidget {
                           decoration: BoxDecoration(
                             gradient: RadialGradient(
                             colors: [
-                              Color.fromARGB(255, 23, 44, 184),
-                              Color.fromARGB(255, 21, 26, 55),
+                            Color.fromARGB(255, 23, 184, 63),
+                            Color.fromARGB(255, 19, 54, 24),
                             ],
                             center: Alignment.center,
                             radius: 2.3,

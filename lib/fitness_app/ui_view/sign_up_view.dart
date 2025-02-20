@@ -19,8 +19,8 @@ class SignUpPage extends StatelessWidget {
                   decoration: const BoxDecoration(
                     gradient: RadialGradient(
                       colors: [
-                        Color.fromARGB(255, 23, 44, 184),
-                        Color.fromARGB(255, 21, 26, 55),
+                        Color.fromARGB(255, 23, 184, 63),
+                        Color.fromARGB(255, 19, 54, 24),
                       ],
                       center: Alignment.center,
                       radius: 0.7,
@@ -92,7 +92,7 @@ class SignUpPage extends StatelessWidget {
                       labelText: 'Nombre Completo',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 23, 44, 184),
+                        color: Color.fromARGB(255, 23, 184, 63),
                       ),
                     ),
                   ),
@@ -102,7 +102,7 @@ class SignUpPage extends StatelessWidget {
                       labelText: 'Correo',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 23, 44, 184),
+                        color: Color.fromARGB(255, 23, 184, 63),
                       ),
                     ),
                   ),
@@ -113,7 +113,7 @@ class SignUpPage extends StatelessWidget {
                       labelText: 'Contraseña',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 23, 44, 184),
+                        color: Color.fromARGB(255, 23, 184, 63),
                       ),
                       suffixIcon: Icon(
                         Icons.visibility_off,
@@ -134,8 +134,8 @@ class SignUpPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                         gradient: RadialGradient(
                           colors: [
-                            Color.fromARGB(255, 23, 44, 184),
-                            Color.fromARGB(255, 21, 26, 55),
+                            Color.fromARGB(255, 23, 184, 63),
+                            Color.fromARGB(255, 19, 54, 24),
                           ],
                           center: Alignment.center,
                           radius: 2.3,

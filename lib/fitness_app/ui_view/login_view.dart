@@ -12,7 +12,6 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Fondo dividido en dos colores con border radius
           Column(
             children: [
               Expanded(
@@ -20,8 +19,8 @@ class LoginPage extends StatelessWidget {
                   decoration: const BoxDecoration(
                     gradient: RadialGradient(
                       colors: [
-                        Color.fromARGB(255, 23, 44, 184),
-                        Color.fromARGB(255, 21, 26, 55),
+                        Color.fromARGB(255, 23, 184, 63),
+                        Color.fromARGB(255, 19, 54, 24),
                       ],
                       center: Alignment.center,
                       radius: 0.7,
@@ -94,7 +93,7 @@ class LoginPage extends StatelessWidget {
                       labelText: 'Correo',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 23, 44, 184),
+                        color: Color.fromARGB(255, 23, 184, 63),
                       ),
                     ),
                   ),
@@ -105,7 +104,7 @@ class LoginPage extends StatelessWidget {
                       labelText: 'Contraseña',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 23, 44, 184),
+                        color: Color.fromARGB(255, 23, 184, 63),
                       ),
                       suffixIcon: Icon(
                         Icons.visibility_off,
@@ -137,8 +136,8 @@ class LoginPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                         gradient: RadialGradient(
                           colors: [
-                            Color.fromARGB(255, 23, 44, 184),
-                            Color.fromARGB(255, 21, 26, 55),
+                            Color.fromARGB(255, 23, 184, 63),
+                            Color.fromARGB(255, 19, 54, 24),
                           ],
                           center: Alignment.center,
                           radius: 2.3,
@@ -166,7 +165,7 @@ class LoginPage extends StatelessWidget {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        border: Border.all(color: Color.fromARGB(255, 23, 44, 184)),
+                        border: Border.all(color: Color.fromARGB(255, 23, 184, 63)),
                       ),
                       child: const Center(
                         child: Text(
@@ -174,7 +173,7 @@ class LoginPage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 23, 44, 184),
+                            color: Color.fromARGB(255, 23, 184, 63),
                           ),
                         ),
                       ),
