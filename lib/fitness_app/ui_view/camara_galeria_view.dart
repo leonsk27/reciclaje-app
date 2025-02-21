@@ -1,59 +1,123 @@
-import 'dart:io';
-
+import 'package:best_flutter_ui_templates/fitness_app/ui_view/escaneado_view.dart';
+import 'package:best_flutter_ui_templates/fitness_app/ui_view/resultado_view.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:geolocator/geolocator.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> with TickerProviderStateMixin {
+class _CameraScreenState extends State<CameraScreen> {
   CameraController? _controller;
   late List<CameraDescription> cameras;
   int _selectedCameraIndex = 0;
-  XFile? capturedImage;
-  bool isScanning = false;
-  bool showResults = false;
-  
-  AnimationController? _scanAnimationController;
-  Animation<double>? _scanAnimation;
-  Animation<double>? _scanLineAnimation;
+  XFile? _capturedImage;
+  bool _isScanning = false;
+  bool _showResults = false;
+  Position? _currentPosition;
 
   @override
   void initState() {
     super.initState();
     _initializeCamera();
-    _initializeAnimations();
+    _checkLocationPermission();
   }
-    void _initializeAnimations() {
-    _scanAnimationController = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
 
-    _scanAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(_scanAnimationController!);
+  Future<void> _checkLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-    _scanLineAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(
-      CurvedAnimation(
-        parent: _scanAnimationController!,
-        curve: Curves.linear,
-      ),
-    )..addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        setState(() {
-          isScanning = false;
-          showResults = true;
-        });
+    // Verificar si el servicio de ubicación está habilitado
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Mostrar diálogo para solicitar activar el servicio de ubicación
+      _showLocationServiceDialog();
+      return;
+    }
+
+    // Verificar permisos de ubicación
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Mostrar mensaje si el usuario negó los permisos
+        _showPermissionDeniedDialog();
+        return;
       }
-    });
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Mostrar mensaje si el usuario negó los permisos permanentemente
+      _showPermissionDeniedForeverDialog();
+      return;
+    }
+
+    // Si tenemos permisos, obtener la ubicación
+    await _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high
+      );
+      setState(() {
+        _currentPosition = position;
+      });
+    } catch (e) {
+      print("Error al obtener la ubicación: $e");
+    }
+  }
+
+  void _showLocationServiceDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Servicio de Ubicación'),
+        content: Text('Por favor active el servicio de ubicación para continuar.'),
+        actions: [
+          TextButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPermissionDeniedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Permisos Denegados'),
+        content: Text('Se requieren permisos de ubicación para usar esta función.'),
+        actions: [
+          TextButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPermissionDeniedForeverDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Permisos Denegados Permanentemente'),
+        content: Text('Por favor habilite los permisos de ubicación en la configuración.'),
+        actions: [
+          TextButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
   }
 
   void _initializeCamera() async {
@@ -86,11 +150,7 @@ class _CameraScreenState extends State<CameraScreen> with TickerProviderStateMix
 
       final XFile? image = await _controller?.takePicture();
       if (image != null) {
-        setState(() {
-          capturedImage = image;
-          isScanning = true;
-        });
-        _scanAnimationController?.forward();
+        _startScanning(image);
       }
     } catch (e) {
       print("Error al tomar la foto: $e");
@@ -102,15 +162,18 @@ class _CameraScreenState extends State<CameraScreen> with TickerProviderStateMix
     try {
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       if (image != null && mounted) {
-        setState(() {
-          capturedImage = image;
-          isScanning = true;
-        });
-        _scanAnimationController?.forward();
+        _startScanning(image);
       }
     } catch (e) {
       print("Error al seleccionar imagen: $e");
     }
+  }
+
+  void _startScanning(XFile image) {
+    setState(() {
+      _capturedImage = image;
+      _isScanning = true;
+    });
   }
 
   void _flipCamera() {
@@ -122,165 +185,47 @@ class _CameraScreenState extends State<CameraScreen> with TickerProviderStateMix
     }
   }
 
+  void _handleScanComplete(XFile image) {
+    setState(() {
+      _isScanning = false;
+      _showResults = true;
+    });
+  }
+
   void _resetCamera() {
     setState(() {
-      capturedImage = null;
-      isScanning = false;
-      showResults = false;
-      _scanAnimationController?.reset();
+      _capturedImage = null;
+      _isScanning = false;
+      _showResults = false;
     });
   }
 
   @override
   void dispose() {
     _controller?.dispose();
-    _scanAnimationController?.dispose();
     super.dispose();
-  }
-
-  Widget _buildScanningView() {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Imagen capturada a pantalla completa
-          if (capturedImage != null)
-            Image.file(
-              File(capturedImage!.path),
-              fit: BoxFit.cover,
-            ),
-          
-          // Overlay semi-transparente
-          Container(
-            color: Colors.black.withOpacity(0.5),
-          ),
-
-          // Animación de escaneo
-          if (_scanLineAnimation != null)
-            AnimatedBuilder(
-              animation: _scanLineAnimation!,
-              builder: (context, child) {
-                return Positioned(
-                  top: MediaQuery.of(context).size.height * _scanLineAnimation!.value,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 2,
-                    color: Colors.green,
-                  ),
-                );
-              },
-            ),
-
-          // Texto e indicador de progreso
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (_scanAnimation != null)
-                  CircularProgressIndicator(
-                    value: _scanAnimation!.value,
-                    color: Colors.green,
-                  ),
-                SizedBox(height: 20),
-                Text(
-                  "Escaneando residuo...",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildResultsView() {
-    return Container(
-      color: Colors.black87,
-      padding: EdgeInsets.all(20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (capturedImage != null)
-            Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.green, width: 2),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.file(
-                  File(capturedImage!.path),
-                    fit: BoxFit.cover,
-                  ),
-              ),
-            ),
-          SizedBox(height: 20),
-          Text(
-            "Resultados del escaneo",
-            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 20),
-          Container(
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.green.withOpacity(0.3)),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Tipo de residuo: Plástico",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Categoría: Reciclable",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Recomendación: Depositar en contenedor amarillo",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: _resetCamera,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-            ),
-            child: Text(
-              "Repetir escaneo",
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isScanning) {
-      return Scaffold(body: _buildScanningView());
-    }
-    if (showResults) {
-      return Scaffold(body: _buildResultsView());
+    // Si estamos escaneando, mostrar la pantalla de escaneo
+    if (_isScanning && _capturedImage != null) {
+      return ScanningScreen(
+        image: _capturedImage!,
+        onScanComplete: _handleScanComplete,
+      );
     }
 
+    // Si tenemos resultados, mostrar la pantalla de resultados
+    if (_showResults && _capturedImage != null) {
+      return ResultsScreen(
+        image: _capturedImage!,
+        onRetry: _resetCamera,
+        location: _currentPosition, // Pasar la ubicación a ResultsScreen
+      );
+    }
+
+    // Pantalla principal de la cámara
     return Scaffold(
       body: Stack(
         children: [

@@ -6,10 +6,20 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Permiso de Audio -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+    <!-- Permiso de Camara -->
     <uses-permission android:name="android.permission.CAMERA"/>
+
+    <!-- Permiso de Galeria -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!-- Permiso de localizacion -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:label="Best Flutter UI Templates"
