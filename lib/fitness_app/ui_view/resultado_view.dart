@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:best_flutter_ui_templates/fitness_app/fitness_app_home_screen.dart';
+import 'package:best_flutter_ui_templates/fitness_app/my_diary/my_diary_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -17,7 +19,7 @@ class ResultsScreen extends StatelessWidget {
     this.location,
   }) : super(key: key);
 
-  Future<void> saveToFirebase() async {
+  Future<void> saveToFirebase(BuildContext context) async {
     try {
       // 1️⃣ Subir imagen a Firebase Storage
       File file = File(image.path);
@@ -39,6 +41,10 @@ class ResultsScreen extends StatelessWidget {
       });
 
       print("✅ Datos guardados en Firebase");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => FitnessAppHomeScreen())
+        );
     } catch (e) {
       print("❌ Error al guardar en Firebase: $e");
     }
@@ -108,7 +114,7 @@ class ResultsScreen extends StatelessWidget {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () async {
-                await saveToFirebase();
+                await saveToFirebase(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,

@@ -1,5 +1,6 @@
-import 'package:best_flutter_ui_templates/fitness_app/my_diary/traductor_view.dart';
+import 'package:best_flutter_ui_templates/fitness_app/my_diary/reporte_notificado_view.dart';
 import 'package:best_flutter_ui_templates/fitness_app/fitness_app_theme.dart';
+import 'package:best_flutter_ui_templates/fitness_app/ui_view/title_view.dart';
 import 'package:flutter/material.dart';
 
 class MyDiaryScreen extends StatefulWidget {
@@ -54,17 +55,17 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   void addAllListData() {
     const int count = 9;
 
-    // listViews.add(
-    //   TitleView(
-    //     titleTxt: 'Mediterranean diet',
-    //     subTxt: 'Details',
-    //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-    //         parent: widget.animationController!,
-    //         curve:
-    //             Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
-    //     animationController: widget.animationController!,
-    //   ),
-    // );
+    listViews.add(
+      TitleView(
+        titleTxt: 'Ultimos reportes',
+        subTxt: 'Ver mas',
+        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+            parent: widget.animationController!,
+            curve:
+                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+        animationController: widget.animationController!,
+      ),
+    );
     // listViews.add(
     //   MediterranesnDietView(
     //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
@@ -110,7 +111,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     // );
 
     listViews.add(
-      TraduccionView(
+      ReporteNotificadoView(
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
                 parent: widget.animationController!,
@@ -246,8 +247,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Traductor',
-                                  textAlign: TextAlign.left,
+                                  'Reportes Notificados',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: FitnessAppTheme.fontName,
                                     fontWeight: FontWeight.w700,
