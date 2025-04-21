@@ -60,8 +60,8 @@ class HotelListView extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              color: HotelAppTheme.buildLightTheme()
-                                  .backgroundColor,
+                              color:
+                                  HotelAppTheme.buildLightTheme().primaryColor,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
